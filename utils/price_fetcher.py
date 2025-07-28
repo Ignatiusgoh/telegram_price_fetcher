@@ -7,13 +7,13 @@ from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 # Function to fetch SPY price
 def get_equities_prices():
     try:
-        msg = ()
+        msg = ''
         equities = ['SPY']
         for ticker in equities: 
             ticker_data = yf.Ticker(ticker)
-            data = ticker_data.history(period="1d")
-            current = data['Close'][-1]
-            prev_close = data['Close'][-2]
+            data = ticker_data.history(period="2d")
+            current = data['Close'].iloc[-1]
+            prev_close = data['Close'].iloc[-2]
             pct_change = ((current - prev_close) / prev_close) * 100
             msg += f"{ticker}: ${current:.2f} ({pct_change:+.2f}%)\n"
         return msg 
@@ -39,7 +39,7 @@ def get_crypto_prices():
         )
     except Exception as e:
         logging.warning(f"⚠️ Error fetching crypto prices: {e}")
-        return []
+        return ''
  
 
 if __name__ == "__main__":
